@@ -1,5 +1,5 @@
 {
-  "_note": "Edit me here OR on github.com in the mobile app, then tray right-click > Sync from GitHub. label = button text. text = pasted text. enter omitted = default below. First 8 prompts get Ctrl+Alt+1..8. The rest are search-only in the popup but still work as /commands and agent tools.",
+  "_note": "Edit me here OR on github.com in the mobile app, then tray right-click > Sync from GitHub. label = button text. category = chip group + dot color (Act green, Think blue, Tidy yellow). text = pasted text. enter omitted = default below. First 8 prompts get Ctrl+Alt+1..8. The rest are search-only in the popup but still work as /commands and agent tools.",
   "settings": {
     "pressEnterByDefault": true,
     "syncRepo": "diklaaltman91-ux/opencode-prompt-popper",
@@ -8,51 +8,61 @@
   "prompts": [
     {
       "label": "Go",
+      "category": "Act",
       "command": "pp-go",
       "text": "go"
     },
     {
       "label": "Fix errors",
+      "category": "Act",
       "command": "pp-fix",
       "text": "Fix the current errors. Show the exact failing check, apply the smallest fix, re-run the narrow check, and report a short receipt."
     },
     {
       "label": "Explain",
+      "category": "Think",
       "command": "pp-explain",
       "text": "Explain what this code does, step by step, in short simple English."
     },
     {
       "label": "Review diff",
+      "category": "Think",
       "command": "pp-review",
       "text": "Review the current diff for bugs, style, and perf. List issues by file:line, then fix the smallest set and re-verify."
     },
     {
       "label": "Write test",
+      "category": "Act",
       "command": "pp-test",
       "text": "Write a narrow test for this change and run it. Report pass/fail with the exact command used."
     },
     {
       "label": "Make plan",
+      "category": "Think",
       "command": "pp-plan",
       "text": "Make a short bounded plan for the next milestone: goal, 3-5 steps, verify step, stop condition. No code yet."
     },
     {
       "label": "Commit",
+      "category": "Act",
       "command": "pp-commit",
       "text": "Commit scoped changes on main with a short message. Show git status first, commit only the listed paths."
     },
     {
       "label": "Clean up",
+      "category": "Tidy",
       "command": "pp-clean",
       "text": "Clean up only what blocks the next proof. No broad refactors, no new tools."
     },
     {
       "label": "Summarize",
+      "category": "Think",
       "command": "pp-summarize",
       "text": "Summarize this session so far in 5 short bullets: done, now, next, blockers."
     },
     {
       "label": "Explain error",
+      "category": "Think",
       "command": "pp-error",
       "text": "Explain this error in short simple English: what broke, why, and the smallest fix."
     }
