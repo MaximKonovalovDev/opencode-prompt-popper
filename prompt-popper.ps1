@@ -182,7 +182,7 @@ $popup.ShowInTaskbar = $false
 $popup.TopMost = $true
 $popup.BackColor = $C_BG
 $popup.Opacity = 0.9
-$popup.ClientSize = New-Object Drawing.Size(472, 428)
+$popup.ClientSize = New-Object Drawing.Size(680, 448)
 $popup.Font = New-Object Drawing.Font('Segoe UI', 9)
 
 function Set-Rounded($form, $radius) {
@@ -223,7 +223,7 @@ $popup.Add_Paint({
 # Header (drag to move).
 $header = New-Object Windows.Forms.Panel
 $header.Location = New-Object Drawing.Point(0, 0)
-$header.Size = New-Object Drawing.Size(472, 38)
+$header.Size = New-Object Drawing.Size(680, 38)
 $header.BackColor = [Drawing.Color]::Transparent
 $popup.Controls.Add($header)
 
@@ -241,7 +241,7 @@ $closeBtn.Text = 'x'
 $closeBtn.Font = New-Object Drawing.Font('Segoe UI', 11)
 $closeBtn.ForeColor = $C_DIM
 $closeBtn.AutoSize = $true
-$closeBtn.Location = New-Object Drawing.Point(444, 7)
+$closeBtn.Location = New-Object Drawing.Point(652, 7)
 $closeBtn.Cursor = 'Hand'
 $closeBtn.BackColor = [Drawing.Color]::Transparent
 $closeBtn.Add_Click({ $popup.Hide() })
@@ -261,7 +261,7 @@ $title.Add_MouseMove($drag)
 # Search box.
 $search = New-Object Windows.Forms.TextBox
 $search.Location = New-Object Drawing.Point(12, 42)
-$search.Size = New-Object Drawing.Size(448, 24)
+$search.Size = New-Object Drawing.Size(656, 24)
 $search.Font = New-Object Drawing.Font('Segoe UI', 9)
 $search.BackColor = $C_BOX
 $search.ForeColor = $C_TEXT
@@ -272,7 +272,7 @@ if ($PSVersionTable.PSEdition -eq 'Core') { try { $search.PlaceholderText = 'Typ
 # Category chips.
 $chips = New-Object Windows.Forms.FlowLayoutPanel
 $chips.Location = New-Object Drawing.Point(12, 72)
-$chips.Size = New-Object Drawing.Size(448, 28)
+$chips.Size = New-Object Drawing.Size(656, 28)
 $chips.BackColor = [Drawing.Color]::Transparent
 $popup.Controls.Add($chips)
 
@@ -301,7 +301,7 @@ function Build-Chips {
 # Prompt buttons (scrollable rows).
 $rows = New-Object Windows.Forms.FlowLayoutPanel
 $rows.Location = New-Object Drawing.Point(12, 104)
-$rows.Size = New-Object Drawing.Size(448, 292)
+$rows.Size = New-Object Drawing.Size(656, 316)
 $rows.FlowDirection = 'LeftToRight'
 $rows.WrapContents = $true
 $rows.AutoScroll = $true
@@ -418,8 +418,8 @@ $foot.Text = 'type filters · Enter pastes · Esc closes · Ctrl+Alt+1..8 anywhe
 $foot.Font = New-Object Drawing.Font('Segoe UI', 7)
 $foot.ForeColor = $C_DIM
 $foot.AutoSize = $false
-$foot.Size = New-Object Drawing.Size(448, 16)
-$foot.Location = New-Object Drawing.Point(12, 404)
+$foot.Size = New-Object Drawing.Size(656, 16)
+$foot.Location = New-Object Drawing.Point(12, 424)
 $foot.BackColor = [Drawing.Color]::Transparent
 $popup.Controls.Add($foot)
 
@@ -431,7 +431,7 @@ function Show-Popup {
   if ($Preview -or $Shot) { $popup.StartPosition = 'CenterScreen' }
   else {
     $pos = [Windows.Forms.Cursor]::Position
-    $x = $pos.X - 236
+    $x = $pos.X - 340
     if ($x -lt 0) { $x = 0 }
     $y = $pos.Y - ($popup.Height + 20)
     if ($y -lt 0) { $y = $pos.Y + 20 }
