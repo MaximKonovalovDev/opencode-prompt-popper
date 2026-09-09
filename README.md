@@ -5,21 +5,21 @@ searchable popup + global hotkeys that pastes any prompt into whatever app is
 focused (Opencode Desktop included), plus native Opencode slash commands and
 agent tools so the same prompts work **inside** Desktop sessions too.
 
-Private repo. Personal tool. No telemetry, no network except GitHub sync.
+Personal tool, open sourced. No telemetry, no network except GitHub sync.
 
 ## What you get
 
 | Where | How |
 |---|---|
 | Any app (Opencode Desktop input, browser, chat) | Tray icon popup, or `Ctrl+Alt+1..8`, or `Ctrl+Alt+P` |
-| Inside Opencode Desktop / TUI / web | Slash commands `/pp-go`, `/pp-fix`, … (10 total) |
+| Inside Opencode Desktop / TUI / web | Slash commands, one per prompt (21 total: `/pp-go`, `/pp-fix`, …) |
 | For the agent itself | Tools `pp_list` / `pp_get` ("use the pp-fix prompt on these errors") |
 | On the go (phone) | Edit `prompts.json` on github.com → tray right-click **Sync from GitHub** |
 
 ## Install (Windows)
 
 ```powershell
-git clone <this-repo>
+git clone https://github.com/MaximKonovalovDev/opencode-prompt-popper.git
 cd opencode-prompt-popper
 pwsh -NoProfile -STA -File install-global.ps1
 ```
@@ -66,3 +66,7 @@ pwsh -NoProfile -File uninstall-global.ps1
 
 Kills the tray, removes the Startup link, commands, and plugin. Your prompts
 are backed up first.
+
+## License
+
+MIT — see `LICENSE`.
