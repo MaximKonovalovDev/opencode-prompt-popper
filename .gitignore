@@ -1,0 +1,6 @@
+*.log
+prompts.backup-*
+prompts.local-*
+prompts.uninstall-*
+.DS_Store
+Thumbs.db
