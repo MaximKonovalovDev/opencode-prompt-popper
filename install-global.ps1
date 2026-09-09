@@ -53,6 +53,14 @@ if (Test-Path $pluginSrc) {
   Write-Host "Plugin installed: $PluginDir\prompt-popper.mjs"
 }
 
+# Desktop double-click bat (pops the panel, starts the tray if needed).
+$batSrc = Join-Path $SrcDir 'ShowPopper.bat'
+if (Test-Path $batSrc) {
+  $desk = [Environment]::GetFolderPath('Desktop')
+  Copy-Item $batSrc (Join-Path $desk 'PromptPopper.bat') -Force
+  Write-Host "Desktop bat: $desk\PromptPopper.bat"
+}
+
 # Startup shortcut so the tray icon returns after reboot.
 $lnk = Join-Path $StartupDir 'OpencodePromptPopper.lnk'
 $shell = New-Object -ComObject WScript.Shell

@@ -6,7 +6,7 @@
 # (near-black canvas, hairline borders, keycap hints).
 # Preview: pwsh -STA -File prompt-popper.ps1 -Preview  |  Off-screen shot: -Shot out.png
 
-param([switch]$Preview, [string]$Shot)
+param([switch]$Preview, [string]$Shot, [switch]$Show)
 
 # Must run STA for Clipboard + Windows Forms. Relaunch with -STA if needed.
 if ([Threading.Thread]::CurrentThread.GetApartmentState() -ne 'STA') {
@@ -25,8 +25,32 @@ $PromptsFile = Join-Path $ScriptDir 'prompts.json'
 $LogFile = Join-Path $ScriptDir 'prompt-popper.log'
 $IconFile = Join-Path $ScriptDir 'icon.ico'
 
+# -Show (used by the Desktop bat): pop the panel. Starts the tray first if needed.
+function Invoke-ShowSignal {
+  $m = New-Object Threading.Mutex($false, 'Global\OpencodePromptPopper')
+  $running = -not $m.WaitOne(0)
+  if ($m) { try { $m.ReleaseMutex() } catch {} }
+  if (-not $running) {
+    $pwsh = (Get-Command pwsh -ErrorAction SilentlyContinue).Source
+    if (-not $pwsh) { $pwsh = "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" }
+    Start-Process $pwsh ('-NoProfile -STA -WindowStyle Hidden -File "' + $PSCommandPath + '"')
+    Write-Host 'Tray started.'
+  }
+  for ($t = 0; $t -lt 20; $t++) {
+    try {
+      $ev = [Threading.EventWaitHandle]::OpenExisting('Global\OpencodePromptPopperShow')
+      $ev.Set() | Out-Null
+      $ev.Dispose()
+      Write-Host 'Popup signaled.'
+      return
+    } catch { Start-Sleep -Milliseconds 500 }
+  }
+  Write-Host 'Could not reach the tray (still starting?). Try again in a few seconds.'
+}
+if ($Show) { Invoke-ShowSignal; exit }
+
 # Single instance only (preview/shot may run next to the tray).
-if (-not $Preview -and -not $Shot) {
+if (-not $Preview -and -not $Shot -and -not $Show) {
   $mutex = New-Object Threading.Mutex($false, 'Global\OpencodePromptPopper')
   if (-not $mutex.WaitOne(0)) {
     [Windows.Forms.MessageBox]::Show('Prompt Popper is already running (check the tray icons near the clock).', 'Prompt Popper')
@@ -158,7 +182,7 @@ $popup.ShowInTaskbar = $false
 $popup.TopMost = $true
 $popup.BackColor = $C_BG
 $popup.Opacity = 0.9
-$popup.ClientSize = New-Object Drawing.Size(308, 428)
+$popup.ClientSize = New-Object Drawing.Size(472, 428)
 $popup.Font = New-Object Drawing.Font('Segoe UI', 9)
 
 function Set-Rounded($form, $radius) {
@@ -199,7 +223,7 @@ $popup.Add_Paint({
 # Header (drag to move).
 $header = New-Object Windows.Forms.Panel
 $header.Location = New-Object Drawing.Point(0, 0)
-$header.Size = New-Object Drawing.Size(308, 38)
+$header.Size = New-Object Drawing.Size(472, 38)
 $header.BackColor = [Drawing.Color]::Transparent
 $popup.Controls.Add($header)
 
@@ -217,7 +241,7 @@ $closeBtn.Text = 'x'
 $closeBtn.Font = New-Object Drawing.Font('Segoe UI', 11)
 $closeBtn.ForeColor = $C_DIM
 $closeBtn.AutoSize = $true
-$closeBtn.Location = New-Object Drawing.Point(284, 7)
+$closeBtn.Location = New-Object Drawing.Point(444, 7)
 $closeBtn.Cursor = 'Hand'
 $closeBtn.BackColor = [Drawing.Color]::Transparent
 $closeBtn.Add_Click({ $popup.Hide() })
@@ -237,7 +261,7 @@ $title.Add_MouseMove($drag)
 # Search box.
 $search = New-Object Windows.Forms.TextBox
 $search.Location = New-Object Drawing.Point(12, 42)
-$search.Size = New-Object Drawing.Size(284, 24)
+$search.Size = New-Object Drawing.Size(448, 24)
 $search.Font = New-Object Drawing.Font('Segoe UI', 9)
 $search.BackColor = $C_BOX
 $search.ForeColor = $C_TEXT
@@ -248,7 +272,7 @@ if ($PSVersionTable.PSEdition -eq 'Core') { try { $search.PlaceholderText = 'Typ
 # Category chips.
 $chips = New-Object Windows.Forms.FlowLayoutPanel
 $chips.Location = New-Object Drawing.Point(12, 72)
-$chips.Size = New-Object Drawing.Size(284, 28)
+$chips.Size = New-Object Drawing.Size(448, 28)
 $chips.BackColor = [Drawing.Color]::Transparent
 $popup.Controls.Add($chips)
 
@@ -277,9 +301,9 @@ function Build-Chips {
 # Prompt buttons (scrollable rows).
 $rows = New-Object Windows.Forms.FlowLayoutPanel
 $rows.Location = New-Object Drawing.Point(12, 104)
-$rows.Size = New-Object Drawing.Size(284, 292)
-$rows.FlowDirection = 'TopDown'
-$rows.WrapContents = $false
+$rows.Size = New-Object Drawing.Size(448, 292)
+$rows.FlowDirection = 'LeftToRight'
+$rows.WrapContents = $true
 $rows.AutoScroll = $true
 $rows.BackColor = [Drawing.Color]::Transparent
 $popup.Controls.Add($rows)
@@ -313,13 +337,13 @@ function Apply-Filter {
     $pp = $script:shown[$i]
     $ii = $i
     $row = New-Object Windows.Forms.Panel
-    $row.Size = New-Object Drawing.Size(260, 42)
+    $row.Size = New-Object Drawing.Size(210, 46)
     $row.Margin = New-Object Windows.Forms.Padding(0, 0, 0, 6)
     $row.Cursor = 'Hand'
     $row.BackColor = $C_ROW
 
     $edge = New-Object Windows.Forms.Panel
-    $edge.Size = New-Object Drawing.Size(3, 42)
+    $edge.Size = New-Object Drawing.Size(3, 46)
     $edge.Location = New-Object Drawing.Point(0, 0)
     $edge.BackColor = $C_ACCENT
     $edge.Tag = 'edge'
@@ -331,7 +355,7 @@ function Apply-Filter {
     $dot.Font = New-Object Drawing.Font('Segoe UI', 8)
     $dot.ForeColor = (Cat-Color $pp.category)
     $dot.AutoSize = $true
-    $dot.Location = New-Object Drawing.Point(11, 12)
+    $dot.Location = New-Object Drawing.Point(9, 13)
     $dot.BackColor = [Drawing.Color]::Transparent
     $row.Controls.Add($dot)
 
@@ -340,8 +364,8 @@ function Apply-Filter {
     $name.Font = New-Object Drawing.Font('Segoe UI Semibold', 10)
     $name.ForeColor = $C_TEXT
     $name.AutoSize = $false
-    $name.Size = New-Object Drawing.Size(170, 24)
-    $name.Location = New-Object Drawing.Point(30, 9)
+    $name.Size = New-Object Drawing.Size(140, 24)
+    $name.Location = New-Object Drawing.Point(26, 10)
     $name.BackColor = [Drawing.Color]::Transparent
     $row.Controls.Add($name)
 
@@ -355,7 +379,7 @@ function Apply-Filter {
       $kbd.TextAlign = 'MiddleCenter'
       $kbd.AutoSize = $false
       $kbd.Size = New-Object Drawing.Size(24, 18)
-      $kbd.Location = New-Object Drawing.Point(228, 12)
+      $kbd.Location = New-Object Drawing.Point(176, 13)
       $row.Controls.Add($kbd)
       $kbd.Add_Click({ Paste-Prompt $pp }.GetNewClosure())
       $kbd.Add_MouseEnter({ Set-Selected $ii }.GetNewClosure())
@@ -394,7 +418,7 @@ $foot.Text = 'type filters · Enter pastes · Esc closes · Ctrl+Alt+1..8 anywhe
 $foot.Font = New-Object Drawing.Font('Segoe UI', 7)
 $foot.ForeColor = $C_DIM
 $foot.AutoSize = $false
-$foot.Size = New-Object Drawing.Size(284, 16)
+$foot.Size = New-Object Drawing.Size(448, 16)
 $foot.Location = New-Object Drawing.Point(12, 404)
 $foot.BackColor = [Drawing.Color]::Transparent
 $popup.Controls.Add($foot)
@@ -407,7 +431,7 @@ function Show-Popup {
   if ($Preview -or $Shot) { $popup.StartPosition = 'CenterScreen' }
   else {
     $pos = [Windows.Forms.Cursor]::Position
-    $x = $pos.X - 154
+    $x = $pos.X - 236
     if ($x -lt 0) { $x = 0 }
     $y = $pos.Y - ($popup.Height + 20)
     if ($y -lt 0) { $y = $pos.Y + 20 }
@@ -554,9 +578,10 @@ $tray.Add_MouseClick({
   if ($e.Button -eq [Windows.Forms.MouseButtons]::Left) { Show-Popup }
 })
 
+$showEvent = New-Object Threading.EventWaitHandle($false, [Threading.EventResetMode]::AutoReset, 'Global\OpencodePromptPopperShow')
 $trackTimer = New-Object Windows.Forms.Timer
 $trackTimer.Interval = 500
-$trackTimer.Add_Tick({ Update-LastWindow $popup.Handle })
+$trackTimer.Add_Tick({ Update-LastWindow $popup.Handle; if ($showEvent.WaitOne(0)) { Show-Popup } })
 $trackTimer.Start()
 
 $VK_CONTROL = 0x11; $VK_ALT = 0x12; $VK_P = 0x50

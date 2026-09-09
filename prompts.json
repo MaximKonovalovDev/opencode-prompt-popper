@@ -1,5 +1,5 @@
 {
-  "_note": "Edit me here OR on github.com in the mobile app, then tray right-click > Sync from GitHub. label = button text. category = chip group + dot color (Act green, Think blue, Tidy yellow). text = pasted text. enter omitted = default below. First 8 prompts get Ctrl+Alt+1..8. The rest are search-only in the popup but still work as /commands and agent tools.",
+  "_note": "Edit me here OR on github.com in the mobile app, then tray right-click > Sync from GitHub. label = button text. category = chip group + dot color (Act green, Think blue, Tidy yellow). text = pasted text. enter omitted = default below. First 8 prompts get Ctrl+Alt+1..8. The rest are grid-click or search, but still work as /commands and agent tools.",
   "settings": {
     "pressEnterByDefault": true,
     "syncRepo": "diklaaltman91-ux/opencode-prompt-popper",
@@ -65,6 +65,42 @@
       "category": "Think",
       "command": "pp-error",
       "text": "Explain this error in short simple English: what broke, why, and the smallest fix."
+    },
+    {
+      "label": "Continue",
+      "category": "Act",
+      "command": "pp-continue",
+      "text": "Continue. Smallest next step, verify it, report a short receipt."
+    },
+    {
+      "label": "Ship it",
+      "category": "Act",
+      "command": "pp-ship",
+      "text": "Final check before done: review the diff, run the narrow test, commit scoped. Report receipt."
+    },
+    {
+      "label": "Brainstorm",
+      "category": "Think",
+      "command": "pp-brainstorm",
+      "text": "Give me 3 different approaches for this with trade-offs. Short."
+    },
+    {
+      "label": "Simplify",
+      "category": "Tidy",
+      "command": "pp-simplify",
+      "text": "Simplify this code without changing behavior. Short summary of what changed."
+    },
+    {
+      "label": "Document",
+      "category": "Tidy",
+      "command": "pp-doc",
+      "text": "Write short comments and docs for this code. No extra prose."
+    },
+    {
+      "label": "Undo",
+      "category": "Tidy",
+      "command": "pp-undo",
+      "text": "Revert the last change safely with git. Show git status first."
     }
   ]
 }
