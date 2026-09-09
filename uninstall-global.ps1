@@ -22,7 +22,7 @@ foreach ($p in $old) { try { Stop-Process -Id $p.ProcessId -Force; Write-Host "S
 
 if (Test-Path $lnk) { Remove-Item $lnk -Force; Write-Host 'Startup link removed.' }
 if (Test-Path $PluginFile) { Remove-Item $PluginFile -Force; Write-Host 'Plugin removed.' }
-foreach ($f in @('pp-go','pp-fix','pp-explain','pp-review','pp-test','pp-plan','pp-commit','pp-clean','pp-summarize','pp-error','pp-continue','pp-ship','pp-brainstorm','pp-simplify','pp-doc','pp-undo')) {
+foreach ($f in @('pp-go','pp-fix','pp-explain','pp-review','pp-test','pp-plan','pp-commit','pp-clean','pp-summarize','pp-error','pp-continue','pp-ship','pp-brainstorm','pp-simplify','pp-doc','pp-undo','pp-forge-health','pp-forge-map','pp-forge-play','pp-forge-compile','pp-forge-record')) {
   $c = Join-Path $CommandsDir "$f.md"
   if (Test-Path $c) { Remove-Item $c -Force }
 }

@@ -100,6 +100,7 @@ $C_CAT    = @{
   'Act'   = [Drawing.Color]::FromArgb(0xA6, 0xE3, 0xA1)
   'Think' = [Drawing.Color]::FromArgb(0x89, 0xB4, 0xFA)
   'Tidy'  = [Drawing.Color]::FromArgb(0xF9, 0xE2, 0xAF)
+  'Forge' = [Drawing.Color]::FromArgb(0xFA, 0xB3, 0x87)
   'Other' = [Drawing.Color]::FromArgb(0xCB, 0xA6, 0xF7)
 }
 
@@ -182,7 +183,7 @@ $popup.ShowInTaskbar = $false
 $popup.TopMost = $true
 $popup.BackColor = $C_BG
 $popup.Opacity = 0.9
-$popup.ClientSize = New-Object Drawing.Size(680, 448)
+$popup.ClientSize = New-Object Drawing.Size(680, 502)
 $popup.Font = New-Object Drawing.Font('Segoe UI', 9)
 
 function Set-Rounded($form, $radius) {
@@ -301,7 +302,7 @@ function Build-Chips {
 # Prompt buttons (scrollable rows).
 $rows = New-Object Windows.Forms.FlowLayoutPanel
 $rows.Location = New-Object Drawing.Point(12, 104)
-$rows.Size = New-Object Drawing.Size(656, 316)
+$rows.Size = New-Object Drawing.Size(656, 370)
 $rows.FlowDirection = 'LeftToRight'
 $rows.WrapContents = $true
 $rows.AutoScroll = $true
@@ -419,7 +420,7 @@ $foot.Font = New-Object Drawing.Font('Segoe UI', 7)
 $foot.ForeColor = $C_DIM
 $foot.AutoSize = $false
 $foot.Size = New-Object Drawing.Size(656, 16)
-$foot.Location = New-Object Drawing.Point(12, 424)
+$foot.Location = New-Object Drawing.Point(12, 482)
 $foot.BackColor = [Drawing.Color]::Transparent
 $popup.Controls.Add($foot)
 

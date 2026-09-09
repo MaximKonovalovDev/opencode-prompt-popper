@@ -1,5 +1,5 @@
 {
-  "_note": "Edit me here OR on github.com in the mobile app, then tray right-click > Sync from GitHub. label = button text. category = chip group + dot color (Act green, Think blue, Tidy yellow). text = pasted text. enter omitted = default below. First 8 prompts get Ctrl+Alt+1..8. The rest are grid-click or search, but still work as /commands and agent tools.",
+  "_note": "Edit me here OR on github.com in the mobile app, then tray right-click > Sync from GitHub. label = button text. category = chip group + dot color (Act green, Think blue, Tidy yellow, Forge orange). text = pasted text. enter omitted = default below. First 8 prompts get Ctrl+Alt+1..8. The rest are grid-click or search, but still work as /commands and agent tools.",
   "settings": {
     "pressEnterByDefault": true,
     "syncRepo": "diklaaltman91-ux/opencode-prompt-popper",
@@ -58,7 +58,7 @@
       "label": "Summarize",
       "category": "Think",
       "command": "pp-summarize",
-      "text": "Summarize this session so far in 5 short bullets: done, now, next, blockers."
+      "text": "Summarize so far in 5 short bullets: done, now, next, blockers."
     },
     {
       "label": "Explain error",
@@ -76,31 +76,61 @@
       "label": "Ship it",
       "category": "Act",
       "command": "pp-ship",
-      "text": "Final check before done: review the diff, run the narrow test, commit scoped. Report receipt."
+      "text": "Last check: review the diff, run the narrow test, commit scoped. Report receipt."
     },
     {
       "label": "Brainstorm",
       "category": "Think",
       "command": "pp-brainstorm",
-      "text": "Give me 3 different approaches for this with trade-offs. Short."
+      "text": "Give 3 ways to do this with trade-offs. Short."
     },
     {
       "label": "Simplify",
       "category": "Tidy",
       "command": "pp-simplify",
-      "text": "Simplify this code without changing behavior. Short summary of what changed."
+      "text": "Simplify this code. Same behavior. Short note on what changed."
     },
     {
       "label": "Document",
       "category": "Tidy",
       "command": "pp-doc",
-      "text": "Write short comments and docs for this code. No extra prose."
+      "text": "Add short comments and docs to this code. Nothing else."
     },
     {
       "label": "Undo",
       "category": "Tidy",
       "command": "pp-undo",
-      "text": "Revert the last change safely with git. Show git status first."
+      "text": "Undo the last change safely with git. Show status first."
+    },
+    {
+      "label": "Forge health",
+      "category": "Forge",
+      "command": "pp-forge-health",
+      "text": "In C:\\forge: run health.summary, then state.read for the top state. Short simple words. Name the red gates."
+    },
+    {
+      "label": "Forge map",
+      "category": "Forge",
+      "command": "pp-forge-map",
+      "text": "In C:\\forge: read MAP.md. Say which dir and verb my task needs. Short."
+    },
+    {
+      "label": "Forge play",
+      "category": "Forge",
+      "command": "pp-forge-play",
+      "text": "In C:\\forge: play.run the current scene, then play.capture the hero frame. Report frames + errors."
+    },
+    {
+      "label": "Forge compile",
+      "category": "Forge",
+      "command": "pp-forge-compile",
+      "text": "In C:\\forge: run code.compile. Fix only red, re-run. Short receipt."
+    },
+    {
+      "label": "Forge record",
+      "category": "Forge",
+      "command": "pp-forge-record",
+      "text": "In C:\\forge: save what we just did in records/ as proof. One short file."
     }
   ]
 }
